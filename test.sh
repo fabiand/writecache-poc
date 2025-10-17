@@ -31,8 +31,10 @@ LOOP_CACHE=$(losetup -j cache.file -O NAME -n)
 DM_CACHE=${DM_SLOW}-writecache
 dmsetup create dm-slow-writecache --table "0 $(blockdev --getsz $LOOP_SLOW) writecache s /dev/mapper/$DM_SLOW $LOOP_CACHE 4096 0"
 
-chmod a+rw /dev/mapper/$DM_SLOW /dev/mapper/$DM_CACHE
 
+#
+# Compare performance
+#
 for DST in $DM_SLOW $DM_CACHE;
 do
   echo "### $DST"
