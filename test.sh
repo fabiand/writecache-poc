@@ -33,6 +33,11 @@ DM_CACHE=${DM_SLOW}-writecache
 # Create a writecache on top of the slow device
 dmsetup create dm-slow-writecache --table "0 $(blockdev --getsz $LOOP_SLOW) writecache s /dev/mapper/$DM_SLOW $LOOP_CACHE 4096 0"
 
+## For comparison dm-cache
+#                                                       meta       cache      backing
+# dmsetup create dm-slow-cached --table '0 102400 cache /dev/loop1 /dev/loop2 /dev/mapper/dm-slow 512 1 writeback default 0'
+
+
 
 #
 # Compare performance
