@@ -16,8 +16,9 @@ SIZE_M=1000
 dd if=/dev/zero bs=1M count=$SIZE_M of=slow.file
 losetup -f slow.file
 LOOP_SLOW=$(losetup -j slow.file -O NAME -n)
-
 DM_SLOW=dm-slow
+
+# Add an artifical delay of 100ms for reads/writes
 dmsetup create $DM_SLOW --table "0 $(blockdev --getsz $LOOP_SLOW) delay $LOOP_SLOW 0 100"
 
 
@@ -27,8 +28,9 @@ dmsetup create $DM_SLOW --table "0 $(blockdev --getsz $LOOP_SLOW) delay $LOOP_SL
 dd if=/dev/zero bs=1M count=$SIZE_M of=cache.file
 losetup -f cache.file
 LOOP_CACHE=$(losetup -j cache.file -O NAME -n)
-
 DM_CACHE=${DM_SLOW}-writecache
+
+# Create a writecache on top of the slow device
 dmsetup create dm-slow-writecache --table "0 $(blockdev --getsz $LOOP_SLOW) writecache s /dev/mapper/$DM_SLOW $LOOP_CACHE 4096 0"
 
 
