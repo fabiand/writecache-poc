@@ -8,3 +8,7 @@ dm-writecache is enough, because reads should be cached in page cache.
 This is done with DM, but LVM supports the same, just liek stratis does.
 
 Overall dm-cache confirmed that performance is higer when using fio on slow vs cached device.
+
+
+# Better manageability with LVM2
+For manageability for real, one would probably want to use LVM to dynamically allocate caches for slow devices.
